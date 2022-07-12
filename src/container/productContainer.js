@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs'
 
 const path = "src/files/products.json"
 class ProductContainer {
@@ -42,7 +42,6 @@ class ProductContainer {
         return null
       }
       })
-
       return console.log("GetByID: ", leak)
     } catch (error) {
       console.log('Id not found: ', error)
@@ -86,4 +85,7 @@ deleteAll = async() => {
  
 
 
-module.exports = ProductContainer;
+
+
+
+export default ProductContainer;
