@@ -34,45 +34,78 @@ class ProductContainer {
   }
   getById = async(id) => {
     try {
-      let objetId = await this.getAllProducts()
-      const leak = objetId.find((item) =>{
-      if(id == item.id){
-        return item
-      }else{
-        return null
+      let products = await this.getAllProducts()
+      let product = null
+      for(const item of products){
+          if(item.id===id){
+              product =item
+          }
       }
-      })
-      return console.log("GetByID: ", leak)
-    } catch (error) {
-      console.log('Id not found: ', error)
-    }
-}
-
-deleteById = async(id) =>{
-  try{
-    let remove = await this.getAllProducts()
-    const removes = remove.filter((item) =>{
-        if(id != item.id){
-            return item
-        }else{
-            return null
-        }
-    })
-    const newArray = fs.promises.writeFile(path, JSON.stringify(removes, null, '\t'))
-    console.log("Product correctly removed")
-    return newArray
-}catch(error){
-    console.log('Cannot be deleted: ', error)
-}
-}   
-
-deleteAll = async() => {
-  try{
-    await fs.promises.writeFile(path, '[]')
+      return product
   } catch (error) {
-    console.log(error)
+      console.log('GetById: '+error)
+      return null
   }
+  }
+
+  deleteById = async(id) =>{
+    try{
+      let remove = await this.getAllProducts()
+      const removes = remove.filter((item) =>{
+          if(id != item.id){
+            return item
+          }else{
+            return null
+          }
+      })
+      const newArray = fs.promises.writeFile(path, JSON.stringify(removes, null, '\t'))
+      console.log(newArray)
+      return newArray
+    }catch(error){
+      console.log('Cannot be deleted: ', error)
+    }
+  }   
+
+  deleteAll = async() => {
+    try{
+      await fs.promises.writeFile(path,JSON.stringify([], null, '\t'))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // update = async(id) =>{
+  //   try{
+  //     let newproducts = await this.getAllProducts()
+      
+  //     newproducts.map(product =>{
+  //       if(id === product.id){
+  //         title=product.title;
+  //         price=product.price;
+  //         image=product.image;
+  //       }
+  //     })
+  //     const newArray = fs.promises.writeFile(path, JSON.stringify(newproducts, null, '\t'))
+  //      console.log(newArray)
+  //     return newproducts;     
+  //   }catch(error){ 
+  //     console.log(error)
+  //   }
+  // }
+  
+  updateProduct = async(id, newData, newData1)=>{
+    let productsArray = await this.getAllProducts()
+    for(const item of productsArray){
+        if(item.id === id){
+            item.title = newData1,
+            item.price = newData
+        }
+    }
+    console.log(`id: ${id}, newData: ${newData}`)
+    console.log(productsArray)
+    await fs.promises.writeFile(path,JSON.stringify(productsArray, null, '\t'))
 }
+
+
     
 }
     
